@@ -151,38 +151,39 @@ internal class XamlDocumentBuilder
 		this._entitiesWriter.AddEntity(entity, transform);
 	}
 
-	//TODO: Change to Xaml Document creation.
+	//TODO: Change to Xaml Document creation. 
 	private void startDocument(BoundingBox box, BoundingBox? viewBox, UnitsType units, bool isPaperSpace = false)
 	{
 		this.initWriters(isPaperSpace);
 
 		this._xmlWriter.WriteStartDocument();
 
-		this._xmlWriter.WriteStartElement("svg");
-		this._xmlWriter.WriteAttributeString("xmlns", "http://www.w3.org/2000/svg");
+		this._xmlWriter.WriteStartElement("Canvas");
+		this._xmlWriter.WriteAttributeString("xmlns", "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
+		//this._xmlWriter.WriteAttributeString("xmlns:x", "http://schemas.microsoft.com/winfx/2006/xaml");
 
-		this._xmlWriter.WriteAttributeString("width", box.Max.X - box.Min.X, units);
-		this._xmlWriter.WriteAttributeString("height", box.Max.Y - box.Min.Y, units);
+		this._xmlWriter.WriteAttributeString("Width", box.Max.X - box.Min.X, units);
+		this._xmlWriter.WriteAttributeString("Height", box.Max.Y - box.Min.Y, units);
 
-		if (viewBox.HasValue)
-		{
-			var vb = viewBox.Value;
-			this._xmlWriter.WriteStartAttribute("viewBox");
-			this._xmlWriter.WriteValue(vb.Min.X.ToPixelSize(units));
-			this._xmlWriter.WriteValue(" ");
-			this._xmlWriter.WriteValue(vb.Min.Y.ToPixelSize(units));
-			this._xmlWriter.WriteValue(" ");
-			this._xmlWriter.WriteValue(vb.LengthX.ToPixelSize(units));
-			this._xmlWriter.WriteValue(" ");
-			this._xmlWriter.WriteValue(vb.LengthY.ToPixelSize(units));
-			this._xmlWriter.WriteEndAttribute();
-		}
+		//if (viewBox.HasValue)
+		//{
+		//	var vb = viewBox.Value;
+		//	this._xmlWriter.WriteStartAttribute("viewBox");
+		//	this._xmlWriter.WriteValue(vb.Min.X.ToPixelSize(units));
+		//	this._xmlWriter.WriteValue(" ");
+		//	this._xmlWriter.WriteValue(vb.Min.Y.ToPixelSize(units));
+		//	this._xmlWriter.WriteValue(" ");
+		//	this._xmlWriter.WriteValue(vb.LengthX.ToPixelSize(units));
+		//	this._xmlWriter.WriteValue(" ");
+		//	this._xmlWriter.WriteValue(vb.LengthY.ToPixelSize(units));
+		//	this._xmlWriter.WriteEndAttribute();
+		//}
 
-		this._xmlWriter.WriteAttributeString("transform", $"scale(1,-1)");
+		this._xmlWriter.WriteAttributeString("RenderTransform", "1,0,0,-1,0,0");
 
 		if (isPaperSpace)
 		{
-			this._xmlWriter.WriteAttributeString("style", "background-color:white");
+			//this._xmlWriter.WriteAttributeString("style", "background-color:white");
 		}
 	}
 }

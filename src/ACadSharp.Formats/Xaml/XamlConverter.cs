@@ -66,7 +66,9 @@ namespace ACadSharp.Formats.Xaml
 					break;
 			}
 
-			return $"{value.ToXaml(decimalPlaces)}{unitSufix}";
+			//return $"{value.ToXaml(decimalPlaces)}{unitSufix}";
+			return $"{value.ToXaml(decimalPlaces)}";
+
 		}
 
 		public static string ToXaml<T>(this T vector, int? decimalPlaces = null)

@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
+
 namespace ACadSharp.Formats.Xaml;
 
 internal class XamlEntityWriter
@@ -328,35 +329,41 @@ internal class XamlEntityWriter
 	{
 		Color color = entity.GetActiveColor();
 
-		_writer.WriteAttributeString("id", entity.Handle.ToString());
+		//_writer.WriteAttributeString("id", entity.Handle.ToString());
 
-		this._writer.WriteStartAttribute("class");
-		this._writer.WriteValue("entity");
-		this._writer.WriteValue(" ");
-		this._writer.WriteValue($"layer_{entity.Layer.Name}");
-		this._writer.WriteEndAttribute();
+		//this._writer.WriteStartAttribute("class");
+		//this._writer.WriteValue("entity");
+		//this._writer.WriteValue(" ");
+		//this._writer.WriteValue($"layer_{entity.Layer.Name}");
+		//this._writer.WriteEndAttribute();
 
-		StringBuilder style = new StringBuilder();
+		//StringBuilder style = new StringBuilder();
 
 		if (!drawStroke)
 		{
-			style.Append($"stroke:none;");
+			//style.Append($"stroke:none;");
 		}
 		else if (!entity.Color.IsByLayer)
 		{
-			style.Append($"stroke:{this._writer.ColorXaml(color)};");
+			//style.Append($"stroke:{this._writer.ColorXaml(color)};");
+			_writer.WriteAttributeString("Stroke", this._writer.ColorXaml(color));
+		}
+		else
+		{			
+			_writer.WriteAttributeString("Stroke", this._writer.ColorXaml(entity.Layer.Color));
 		}
 
 		var lineWeight = entity.GetActiveLineWeightType();
+		
 		if (entity.LineWeight != LineWeightType.ByLayer)
 		{
-			style.Append($"stroke-width: {this._writer.LineWeightValueToXaml(lineWeight)};");
+			_writer.WriteAttributeString("StrokeThickness", this._writer.LineWeightValueToXaml(lineWeight));
+		}
+		else
+		{
+			_writer.WriteAttributeString("StrokeThickness", this._writer.LineWeightValueToXaml(entity.Layer.LineWeight));
 		}
 
-		if (style.Length > 0)
-		{
-			this._writer.WriteAttributeString("style", style.ToString());
-		}
 
 		this.writeTransform(transform);
 
@@ -413,14 +420,14 @@ internal class XamlEntityWriter
 	//TODO: Change this to write a XamlLine instead of a SvgLine
 	private void writeLine(Line line, Transform transform)
 	{
-		_writer.WriteStartElement("line");
+		_writer.WriteStartElement("Line");
 
 		this.writeEntityHeader(line, transform);
 
-		_writer.WriteAttributeString("x1", this._writer.ToXamlFormat(line.StartPoint.X));
-		_writer.WriteAttributeString("y1", this._writer.ToXamlFormat(line.StartPoint.Y));
-		_writer.WriteAttributeString("x2", this._writer.ToXamlFormat(line.EndPoint.X));
-		_writer.WriteAttributeString("y2", this._writer.ToXamlFormat(line.EndPoint.Y));
+		_writer.WriteAttributeString("X1", this._writer.ToXamlFormat(line.StartPoint.X));
+		_writer.WriteAttributeString("Y1", this._writer.ToXamlFormat(line.StartPoint.Y));
+		_writer.WriteAttributeString("X2", this._writer.ToXamlFormat(line.EndPoint.X));
+		_writer.WriteAttributeString("Y2", this._writer.ToXamlFormat(line.EndPoint.Y));
 
 		_writer.WriteEndElement();
 	}
@@ -781,9 +788,10 @@ internal class XamlEntityWriter
 	}
 
 	//TODO: Change this to write a XamlTransform instead of a SvgTransform
-	private void writeTransform(string name = "transform", XYZ? translation = null, XYZ? scale = null, double? rotation = null)
+	private void writeTransform(string name = "RenderTransform", XYZ? translation = null, XYZ? scale = null, double? rotation = null)
 	{
 		StringBuilder sb = new StringBuilder();
+
 
 		if (translation.HasValue)
 		{

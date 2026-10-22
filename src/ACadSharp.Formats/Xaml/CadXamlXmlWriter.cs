@@ -36,7 +36,7 @@ namespace ACadSharp.Formats.Xaml
 				color = Color.Black;
 			}
 
-			return $"rgb({color.R},{color.G},{color.B})";
+			return $"#FF{color.R}{color.G}{color.B}";
 		}
 
 		public string ToXamlPixelSizeFormat(IVector value)

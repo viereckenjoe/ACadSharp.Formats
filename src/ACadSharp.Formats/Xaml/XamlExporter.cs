@@ -13,7 +13,7 @@ namespace ACadSharp.Formats.Xaml
 	internal class XamlExporter : ExporterBase
 	{
 		/// <summary>
-		/// Gets or sets the configuration settings for GDFX export.
+		/// Gets or sets the configuration settings for XAML export.
 		/// </summary>
 		public XamlConfiguration Configuration { get; set; } = new XamlConfiguration();
 
@@ -22,7 +22,7 @@ namespace ACadSharp.Formats.Xaml
 		/// <summary>
 		/// Initializes a new instance of the <see cref="XamlExporter"/> class with the specified file path.
 		/// </summary>
-		/// <param name="filename">The path to the output GDFX file.</param>
+		/// <param name="filename">The path to the output XAML file.</param>
 		public XamlExporter(string filename)
 			: this(File.Create(filename))
 		{
@@ -31,7 +31,7 @@ namespace ACadSharp.Formats.Xaml
 		/// <summary>
 		/// Initializes a new instance of the <see cref="XamlExporter"/> class with the specified stream.
 		/// </summary>
-		/// <param name="stream">The stream to write the GDFX output to.</param>
+		/// <param name="stream">The stream to write the XAML output to.</param>
 		public XamlExporter(Stream stream)
 			: base(stream)
 		{
